@@ -52,7 +52,11 @@ __weak int rockchip_dnl_key_pressed(void)
 	ret = -ENODEV;
 	uclass_foreach_dev(dev, uc) {
 		if (!strncmp(dev->name, "saradc", 6)) {
+#if CONFIG_BOOT_MODE_BTT
+			ret = adc_channel_single_shot(dev->name, 0, &val);
+#else
 			ret = adc_channel_single_shot(dev->name, 1, &val);
+#endif
 			break;
 		}
 	}
